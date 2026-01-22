@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+
 	"github.com/leconcepteur/cloud-cicd-poc/internal/database"
 	"github.com/leconcepteur/cloud-cicd-poc/internal/models"
 )

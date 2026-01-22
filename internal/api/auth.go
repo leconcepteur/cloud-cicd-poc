@@ -96,7 +96,7 @@ func (h *AuthHandler) Login(c echo.Context) error {
 func (h *AuthHandler) Logout(c echo.Context) error {
 	cookie, err := c.Cookie(middleware.SessionCookieName)
 	if err == nil {
-		h.authService.Logout(c.Request().Context(), cookie.Value)
+		_ = h.authService.Logout(c.Request().Context(), cookie.Value)
 	}
 
 	// Clear the cookie

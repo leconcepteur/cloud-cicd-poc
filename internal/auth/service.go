@@ -9,9 +9,10 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/leconcepteur/cloud-cicd-poc/internal/database"
 	"github.com/leconcepteur/cloud-cicd-poc/internal/models"
-	"golang.org/x/crypto/bcrypt"
 )
 
 var (
@@ -62,7 +63,7 @@ func (s *Service) Register(ctx context.Context, req *models.RegisterRequest) (*m
 	if err != nil {
 		return nil, fmt.Errorf("failed to begin transaction: %w", err)
 	}
-	defer tx.Rollback()
+	defer func() { _ = tx.Rollback() }()
 
 	_, err = tx.ExecContext(ctx,
 		`INSERT INTO users (id, username, password, created_at, updated_at) VALUES ($1, $2, $3, $4, $5)`,

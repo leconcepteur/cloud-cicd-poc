@@ -91,8 +91,8 @@ func (s *Service) tryMatch(ctx context.Context) {
 	newGame, err := s.gameService.CreateGame(ctx, player1.UserID, player2.UserID)
 	if err != nil {
 		// Put players back in queue
-		s.queue.Join(ctx, player1.UserID, player1.Username)
-		s.queue.Join(ctx, player2.UserID, player2.Username)
+		_ = s.queue.Join(ctx, player1.UserID, player1.Username)
+		_ = s.queue.Join(ctx, player2.UserID, player2.Username)
 		return
 	}
 
