@@ -1,0 +1,108 @@
+name: Manual Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+      branch:
+        description: "Branch to deploy"
+        required: true
+        default: "develop"
+
+env:
+  AWS_REGION: us-east-1
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    name: Manual Deploy to ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Get short SHA
+        id: sha
+        run: echo "short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Set EKS cluster name
+        id: cluster
+        run: |
+          if [ "${{ inputs.environment }}" = "production" ]; then
+            echo "name=tictactoe-prod-eks" >> $GITHUB_OUTPUT
+          else
+            echo "name=tictactoe-staging-eks" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build and push backend
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/Dockerfile.backend
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/tictactoe-backend:${{ steps.sha.outputs.short }}
+            ${{ steps.login-ecr.outputs.registry }}/tictactoe-backend:${{ inputs.environment }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/Dockerfile.frontend
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/tictactoe-frontend:${{ steps.sha.outputs.short }}
+            ${{ steps.login-ecr.outputs.registry }}/tictactoe-frontend:${{ inputs.environment }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            VITE_API_URL=/api/v1
+
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --name ${{ steps.cluster.outputs.name }} --region ${{ env.AWS_REGION }}
+
+      - name: Deploy to Kubernetes
+        env:
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          IMAGE_TAG: ${{ steps.sha.outputs.short }}
+        run: |
+          OVERLAY=${{ inputs.environment }}
+          if [ "$OVERLAY" = "development" ]; then
+            OVERLAY="staging"
+          fi
+          cd infrastructure/k8s/overlays/$OVERLAY
+          envsubst < kustomization.yaml > kustomization.yaml.tmp
+          mv kustomization.yaml.tmp kustomization.yaml
+          kubectl apply -k .
+
+      - name: Wait for rollout
+        run: |
+          kubectl -n tictactoe rollout status deployment/backend --timeout=300s
+          kubectl -n tictactoe rollout status deployment/frontend --timeout=300s
