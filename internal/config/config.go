@@ -1,9 +1,12 @@
 package config
 
 import (
+	"log"
 	"os"
 	"strconv"
 )
+
+const defaultSessionSecret = "dev-secret-change-in-production"
 
 type Config struct {
 	Port          string
@@ -22,12 +25,20 @@ func Load() *Config {
 		}
 	}
 
+	env := getEnv("ENV", "development")
+	sessionSecret := getEnv("SESSION_SECRET", defaultSessionSecret)
+
+	// Warn if using default session secret in non-development environments
+	if env != "development" && sessionSecret == defaultSessionSecret {
+		log.Printf("WARNING: Using default SESSION_SECRET in %s environment. Please set a secure SESSION_SECRET environment variable!", env)
+	}
+
 	return &Config{
 		Port:          getEnv("PORT", "8080"),
-		Env:           getEnv("ENV", "development"),
+		Env:           env,
 		DatabaseURL:   getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/tictactoe?sslmode=disable"),
 		RedisURL:      getEnv("REDIS_URL", "redis://localhost:6379"),
-		SessionSecret: getEnv("SESSION_SECRET", "dev-secret-change-in-production"),
+		SessionSecret: sessionSecret,
 		SessionMaxAge: sessionMaxAge,
 	}
 }

@@ -59,7 +59,9 @@ func (q *Queue) Leave(ctx context.Context, userID string) error {
 			continue
 		}
 		if entry.UserID == userID {
-			q.redis.ZRem(ctx, queueKey, entryStr)
+			if err := q.redis.ZRem(ctx, queueKey, entryStr).Err(); err != nil {
+				return fmt.Errorf("failed to remove from queue: %w", err)
+			}
 			break
 		}
 	}
@@ -106,7 +108,9 @@ func (q *Queue) FindMatch(ctx context.Context) (*models.QueueEntry, *models.Queu
 	}
 
 	// Remove both from queue
-	q.redis.ZRem(ctx, queueKey, entries[0], entries[1])
+	if err := q.redis.ZRem(ctx, queueKey, entries[0], entries[1]).Err(); err != nil {
+		return nil, nil, fmt.Errorf("failed to remove matched players from queue: %w", err)
+	}
 
 	return &player1, &player2, nil
 }

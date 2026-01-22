@@ -8,6 +8,7 @@ class SSEService {
   private reconnectAttempts = 0
   private maxReconnectAttempts = 10
   private baseDelay = 1000
+  private reconnectTimeout: ReturnType<typeof setTimeout> | null = null
 
   connect() {
     if (this.eventSource) {
@@ -47,13 +48,18 @@ class SSEService {
     const delay = this.baseDelay * Math.pow(2, this.reconnectAttempts)
     this.reconnectAttempts++
 
-    setTimeout(() => {
+    this.reconnectTimeout = setTimeout(() => {
+      this.reconnectTimeout = null
       console.log(`Reconnecting... attempt ${this.reconnectAttempts}`)
       this.connect()
     }, delay)
   }
 
   disconnect() {
+    if (this.reconnectTimeout) {
+      clearTimeout(this.reconnectTimeout)
+      this.reconnectTimeout = null
+    }
     if (this.eventSource) {
       this.eventSource.close()
       this.eventSource = null

@@ -38,7 +38,8 @@ services:
       ENV: development
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/tictactoe?sslmode=disable
       REDIS_URL: redis://redis:6379
-      SESSION_SECRET: dev-secret-change-in-production
+      # WARNING: This default is for local development only. Override SESSION_SECRET in production!
+      SESSION_SECRET: ${SESSION_SECRET:-dev-secret-change-in-production}
     depends_on:
       postgres:
         condition: service_healthy
