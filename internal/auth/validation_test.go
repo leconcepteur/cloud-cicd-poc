@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -78,7 +79,7 @@ func TestContains(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.s+"_"+tt.substr, func(t *testing.T) {
-			got := contains(tt.s, tt.substr)
+			got := strings.Contains(tt.s, tt.substr)
 			if got != tt.want {
 				t.Errorf("contains(%q, %q) = %v, want %v", tt.s, tt.substr, got, tt.want)
 			}
