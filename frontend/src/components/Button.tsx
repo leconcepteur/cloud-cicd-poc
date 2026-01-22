@@ -13,7 +13,8 @@ export function Button({
   className = '',
   ...props
 }: ButtonProps) {
-  const baseStyles = 'font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+  const baseStyles =
+    'font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
 
   const variants = {
     primary: 'bg-blue-600 text-white hover:bg-blue-700',
@@ -28,10 +29,7 @@ export function Button({
   }
 
   return (
-    <button
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
-      {...props}
-    >
+    <button className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`} {...props}>
       {children}
     </button>
   )

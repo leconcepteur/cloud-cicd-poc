@@ -40,19 +40,22 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
 }
 
 export const authApi = {
-  register: (data: RegisterRequest): Promise<User> => request('/auth/register', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  }),
+  register: (data: RegisterRequest): Promise<User> =>
+    request('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
 
-  login: (data: LoginRequest): Promise<LoginResponse> => request('/auth/login', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  }),
+  login: (data: LoginRequest): Promise<LoginResponse> =>
+    request('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
 
-  logout: (): Promise<void> => request('/auth/logout', {
-    method: 'POST',
-  }),
+  logout: (): Promise<void> =>
+    request('/auth/logout', {
+      method: 'POST',
+    }),
 
   me: (): Promise<User> => request('/auth/me'),
 }
@@ -60,28 +63,33 @@ export const authApi = {
 export const gameApi = {
   getState: (): Promise<GameStateResponse> => request('/game/state'),
 
-  ready: (): Promise<GameStateResponse> => request('/game/ready', {
-    method: 'POST',
-  }),
+  ready: (): Promise<GameStateResponse> =>
+    request('/game/ready', {
+      method: 'POST',
+    }),
 
-  move: (position: number): Promise<GameStateResponse> => request('/game/move', {
-    method: 'POST',
-    body: JSON.stringify({ position }),
-  }),
+  move: (position: number): Promise<GameStateResponse> =>
+    request('/game/move', {
+      method: 'POST',
+      body: JSON.stringify({ position }),
+    }),
 
-  forfeit: (): Promise<GameStateResponse> => request('/game/forfeit', {
-    method: 'POST',
-  }),
+  forfeit: (): Promise<GameStateResponse> =>
+    request('/game/forfeit', {
+      method: 'POST',
+    }),
 }
 
 export const matchmakingApi = {
-  join: (): Promise<{ message: string }> => request('/matchmaking/join', {
-    method: 'POST',
-  }),
+  join: (): Promise<{ message: string }> =>
+    request('/matchmaking/join', {
+      method: 'POST',
+    }),
 
-  leave: (): Promise<{ message: string }> => request('/matchmaking/leave', {
-    method: 'POST',
-  }),
+  leave: (): Promise<{ message: string }> =>
+    request('/matchmaking/leave', {
+      method: 'POST',
+    }),
 }
 
 export const statsApi = {

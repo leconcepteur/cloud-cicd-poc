@@ -76,9 +76,7 @@ export function RegisterPage() {
             autoComplete="new-password"
           />
 
-          {error && (
-            <div className="p-3 bg-red-50 text-red-600 rounded-lg text-sm">{error}</div>
-          )}
+          {error && <div className="p-3 bg-red-50 text-red-600 rounded-lg text-sm">{error}</div>}
 
           <Button type="submit" disabled={isLoading} className="w-full">
             {isLoading ? 'Creating account...' : 'Register'}

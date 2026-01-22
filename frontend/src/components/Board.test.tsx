@@ -5,14 +5,7 @@ import { Board } from './Board'
 describe('Board', () => {
   it('renders 9 cells', () => {
     const board = Array(9).fill('')
-    render(
-      <Board
-        board={board}
-        onCellClick={() => {}}
-        disabled={false}
-        yourSymbol="X"
-      />
-    )
+    render(<Board board={board} onCellClick={() => {}} disabled={false} yourSymbol="X" />)
 
     const buttons = screen.getAllByRole('button')
     expect(buttons).toHaveLength(9)
@@ -20,14 +13,7 @@ describe('Board', () => {
 
   it('displays X and O symbols correctly', () => {
     const board = ['X', 'O', '', '', 'X', '', '', '', 'O']
-    render(
-      <Board
-        board={board}
-        onCellClick={() => {}}
-        disabled={false}
-        yourSymbol="X"
-      />
-    )
+    render(<Board board={board} onCellClick={() => {}} disabled={false} yourSymbol="X" />)
 
     const buttons = screen.getAllByRole('button')
     expect(buttons[0]).toHaveTextContent('X')
@@ -40,14 +26,7 @@ describe('Board', () => {
     const board = Array(9).fill('')
     const handleClick = vi.fn()
 
-    render(
-      <Board
-        board={board}
-        onCellClick={handleClick}
-        disabled={false}
-        yourSymbol="X"
-      />
-    )
+    render(<Board board={board} onCellClick={handleClick} disabled={false} yourSymbol="X" />)
 
     const buttons = screen.getAllByRole('button')
     fireEvent.click(buttons[4])
@@ -59,14 +38,7 @@ describe('Board', () => {
     const board = ['X', '', '', '', '', '', '', '', '']
     const handleClick = vi.fn()
 
-    render(
-      <Board
-        board={board}
-        onCellClick={handleClick}
-        disabled={false}
-        yourSymbol="O"
-      />
-    )
+    render(<Board board={board} onCellClick={handleClick} disabled={false} yourSymbol="O" />)
 
     const buttons = screen.getAllByRole('button')
     fireEvent.click(buttons[0]) // Click on occupied cell
@@ -76,31 +48,17 @@ describe('Board', () => {
 
   it('disables all cells when disabled prop is true', () => {
     const board = Array(9).fill('')
-    render(
-      <Board
-        board={board}
-        onCellClick={() => {}}
-        disabled={true}
-        yourSymbol="X"
-      />
-    )
+    render(<Board board={board} onCellClick={() => {}} disabled={true} yourSymbol="X" />)
 
     const buttons = screen.getAllByRole('button')
-    buttons.forEach(button => {
+    buttons.forEach((button) => {
       expect(button).toBeDisabled()
     })
   })
 
   it('disables occupied cells', () => {
     const board = ['X', 'O', '', '', '', '', '', '', '']
-    render(
-      <Board
-        board={board}
-        onCellClick={() => {}}
-        disabled={false}
-        yourSymbol="X"
-      />
-    )
+    render(<Board board={board} onCellClick={() => {}} disabled={false} yourSymbol="X" />)
 
     const buttons = screen.getAllByRole('button')
     expect(buttons[0]).toBeDisabled() // X cell

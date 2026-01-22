@@ -23,11 +23,12 @@ export function Board({ board, onCellClick, disabled, yourSymbol }: BoardProps) 
             disabled:cursor-not-allowed
           `}
         >
-          {cell || (cell === '' && !disabled ? (
-            <span className="text-gray-300 text-3xl opacity-0 hover:opacity-50">
-              {yourSymbol}
-            </span>
-          ) : null)}
+          {cell ||
+            (cell === '' && !disabled ? (
+              <span className="text-gray-300 text-3xl opacity-0 hover:opacity-50">
+                {yourSymbol}
+              </span>
+            ) : null)}
         </button>
       ))}
     </div>

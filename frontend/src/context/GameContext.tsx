@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-  type ReactNode,
-} from 'react'
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react'
 import type { Game, SSEEvent, MatchFoundData, GameUpdateData, GameEndData } from '../types'
 import { gameApi, matchmakingApi } from '../services/api'
 import { sseService } from '../services/sse'

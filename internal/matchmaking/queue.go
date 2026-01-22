@@ -12,8 +12,8 @@ import (
 )
 
 const (
-	queueKey       = "matchmaking:queue"
-	queueEntryTTL  = 5 * time.Minute
+	queueKey      = "matchmaking:queue"
+	queueEntryTTL = 5 * time.Minute
 )
 
 type Queue struct {

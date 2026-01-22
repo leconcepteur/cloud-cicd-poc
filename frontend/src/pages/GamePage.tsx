@@ -52,9 +52,7 @@ export function GamePage() {
             </div>
           ) : (
             <>
-              <p className="text-sm text-gray-500 mb-4">
-                Both players must be ready to start
-              </p>
+              <p className="text-sm text-gray-500 mb-4">Both players must be ready to start</p>
               <Button onClick={setReady} size="lg" className="w-full">
                 Ready!
               </Button>
@@ -111,8 +109,10 @@ export function GamePage() {
                 {yourSymbol}
               </span>
             </p>
-            <p className={`text-xl font-semibold ${isYourTurn ? 'text-green-600' : 'text-gray-400'}`}>
-              {isYourTurn ? "Your turn!" : "Opponent's turn..."}
+            <p
+              className={`text-xl font-semibold ${isYourTurn ? 'text-green-600' : 'text-gray-400'}`}
+            >
+              {isYourTurn ? 'Your turn!' : "Opponent's turn..."}
             </p>
           </div>
 
