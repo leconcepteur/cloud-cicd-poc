@@ -6,9 +6,10 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/redis/go-redis/v9"
+
 	"github.com/leconcepteur/cloud-cicd-poc/internal/database"
 	"github.com/leconcepteur/cloud-cicd-poc/internal/models"
-	"github.com/redis/go-redis/v9"
 )
 
 const (

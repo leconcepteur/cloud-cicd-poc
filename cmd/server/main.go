@@ -12,6 +12,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	echoMiddleware "github.com/labstack/echo/v4/middleware"
+
 	"github.com/leconcepteur/cloud-cicd-poc/internal/api"
 	"github.com/leconcepteur/cloud-cicd-poc/internal/auth"
 	"github.com/leconcepteur/cloud-cicd-poc/internal/config"

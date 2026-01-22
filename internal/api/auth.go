@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+
 	"github.com/leconcepteur/cloud-cicd-poc/internal/auth"
 	"github.com/leconcepteur/cloud-cicd-poc/internal/middleware"
 	"github.com/leconcepteur/cloud-cicd-poc/internal/models"

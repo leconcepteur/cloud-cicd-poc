@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/labstack/echo/v4"
+
 	"github.com/leconcepteur/cloud-cicd-poc/internal/auth"
 )
 

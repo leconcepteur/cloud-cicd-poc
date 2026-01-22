@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+
 	"github.com/leconcepteur/cloud-cicd-poc/internal/game"
 	"github.com/leconcepteur/cloud-cicd-poc/internal/matchmaking"
 	"github.com/leconcepteur/cloud-cicd-poc/internal/middleware"
