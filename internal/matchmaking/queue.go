@@ -8,6 +8,7 @@ import (
 
 	"github.com/leconcepteur/cloud-cicd-poc/internal/database"
 	"github.com/leconcepteur/cloud-cicd-poc/internal/models"
+	"github.com/redis/go-redis/v9"
 )
 
 const (
@@ -37,7 +38,7 @@ func (q *Queue) Join(ctx context.Context, userID, username string) error {
 
 	// Use sorted set with timestamp as score
 	score := float64(entry.JoinedAt.UnixNano())
-	if err := q.redis.ZAdd(ctx, queueKey, float64(score), string(data)).Err(); err != nil {
+	if err := q.redis.ZAdd(ctx, queueKey, redis.Z{Score: score, Member: string(data)}).Err(); err != nil {
 		return fmt.Errorf("failed to add to queue: %w", err)
 	}
 
