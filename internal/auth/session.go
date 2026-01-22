@@ -14,8 +14,8 @@ import (
 const sessionPrefix = "session:"
 
 type SessionManager struct {
-	redis     *database.RedisDB
-	maxAge    time.Duration
+	redis  *database.RedisDB
+	maxAge time.Duration
 }
 
 type SessionData struct {

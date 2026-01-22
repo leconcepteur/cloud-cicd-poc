@@ -12,7 +12,7 @@ import (
 )
 
 type AuthHandler struct {
-	authService *auth.Service
+	authService   *auth.Service
 	sessionMaxAge int
 }
 

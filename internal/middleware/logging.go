@@ -9,15 +9,15 @@ import (
 )
 
 type LogEntry struct {
-	Timestamp  string `json:"timestamp"`
-	Level      string `json:"level"`
-	Method     string `json:"method"`
-	Path       string `json:"path"`
-	Status     int    `json:"status"`
-	Latency    string `json:"latency"`
-	IP         string `json:"ip"`
-	UserAgent  string `json:"user_agent"`
-	Error      string `json:"error,omitempty"`
+	Timestamp string `json:"timestamp"`
+	Level     string `json:"level"`
+	Method    string `json:"method"`
+	Path      string `json:"path"`
+	Status    int    `json:"status"`
+	Latency   string `json:"latency"`
+	IP        string `json:"ip"`
+	UserAgent string `json:"user_agent"`
+	Error     string `json:"error,omitempty"`
 }
 
 func JSONLoggerMiddleware() echo.MiddlewareFunc {
